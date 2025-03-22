@@ -1,0 +1,111 @@
+{
+
+    "Kulunvalvontajärjestelmä": {
+
+        "detection": {
+
+            "user": {
+                
+                "regexp": "'personName': '(.+?,\\s.+?)\\s\\(\\d+\\)'",
+                "matchInGroup": 1
+
+            },
+
+            "directionIn": {
+                
+                "regexp": "'description': 'Access Granted - Entry Made'",
+                "matchInGroup": 0
+
+            },
+
+            "directionOut": {
+                
+                "regexp": "'description': 'Egress Granted'",
+                "matchInGroup": 0
+
+            },
+
+            "room": {
+                
+                "regexp": "'deviceName': '(.+?)(?:\\s+.+?)?'",
+                "matchInGroup": 1
+
+            }
+
+        },
+
+        "formatting": {
+
+            "user": {
+        
+                "pattern": "^(\\w+),\\s(\\w+).*$",
+                "repl": "\\2.\\1@demo.internal"
+        
+            },
+        
+            "room": {
+        
+                "pattern": "^(\\w*)$",
+                "repl": "\\1"
+        
+            }
+        
+        }
+
+    },
+
+    "Työajanseuranta": {
+
+        "detection": {
+
+            "user": {
+                
+                "regexp": "user:\\s(.+?),",
+                "matchInGroup": 1
+
+            },
+
+            "directionIn": {
+                
+                "regexp": "event: Clock in",
+                "matchInGroup": 0
+
+            },
+
+            "directionOut": {
+                
+                "regexp": "event: Clock out",
+                "matchInGroup": 0
+
+            },
+
+            "room": {
+                
+                "regexp": "device: (.+?)$",
+                "matchInGroup": 1
+
+            }
+
+        },
+
+        "formatting": {
+
+            "user": {
+        
+                "pattern": "^(.+?) (.+)$",
+                "repl": "\\1.\\2@demo.internal"
+        
+            },
+        
+            "room": {
+        
+                "pattern": "^.+$",
+                "repl": "Aula"
+        
+            }
+        
+        }
+
+    }
+
+}

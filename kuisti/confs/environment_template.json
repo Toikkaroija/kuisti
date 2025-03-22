@@ -1,0 +1,60 @@
+{
+
+    "common": {
+
+        "localIpAddress": "10.0.0.12",
+        "localEventListenerPort": 8080,
+        "localExtSystemListenerPort": 9090,
+        "implicitTrustAtBoot": true
+
+    },
+
+    "ldap": {
+
+        "domain": "demo.internal",
+        "ditSearchBase": "DC=demo,DC=internal",
+        "serviceUser": "kuisti",
+        "roomPrefix": "KuistiRoom_",
+        "roomDitAttr": "cn",
+        "rolePrefix": "KuistiRole_",
+        "roleDitAttr": "cn",
+        "userDitAttr": "userPrincipalName"
+
+    },
+
+    "firewalls": {
+
+        "fw01": {
+
+            "ipAddress": "10.0.0.1",
+            "apiKey": "",
+            "apiSecret": "",
+            "filtersetsPath": "filtersets.json"
+
+        }
+        
+    },
+
+    "networks": {
+
+        "Toimisto": "10.14.11.0/24",
+        "Halli": "10.14.13.0/24"
+
+    },
+
+    "routes": {
+        
+        "Toimisto": ["aula", "toimisto"],
+        "Halli": ["aula", "halli"]
+    
+    },
+
+    "roomTimeouts": {
+
+        "aula": 480,
+        "toimisto": 300,
+        "halli": 300
+
+    }
+
+}

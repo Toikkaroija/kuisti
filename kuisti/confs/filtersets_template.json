@@ -1,0 +1,75 @@
+{
+
+    "default": {
+
+        "filters": [
+            
+            {
+
+                "action": "pass",
+                "dstAddr": "*",
+                "dstPort": "*",
+                "protocol": "icmp",
+                "ipVersion": "4",
+                "sequence": 1
+
+            },
+
+            {
+
+                "action": "block",
+                "dstAddr": "10.0.0.0/24",
+                "dstPort": "443",
+                "protocol": "tcp",
+                "ipVersion": "4",
+                "sequence": 2
+
+            }
+
+        ],
+
+        "timeout": 0
+
+    },
+
+    "tyontekija": {
+
+        "filters": [
+            
+            {
+
+                "action": "pass",
+                "dstAddr": "*",
+                "dstPort": "443",
+                "protocol": "tcp",
+                "ipVersion": "4",
+                "sequence": 11
+
+            },
+            
+            {
+
+                "action": "pass",
+                "dstAddr": "10.0.0.14",
+                "dstPort": "21",
+                "protocol": "tcp",
+                "ipVersion": "4",
+                "sequence": 12
+
+            }
+        
+        ],
+
+        "monitoredServices": {
+
+            "google.com": 443,
+            "10.0.0.14": 21
+
+        },
+
+        "timeout": 30,
+        "renewalAmount": 14
+
+    }
+
+}
