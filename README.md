@@ -55,7 +55,7 @@ The plugins are meant to be installed on logging servers, that can forward works
 7. Allow the service account to run batch jobs using the server's secpol or GPO.
 8. Run the following command as an administrator inside the ADPlugin folder:
    ```powershell
-   .\Install-KuistiADPlugin -logName LOG_NAME -remoteEndpointIpAddress KUISTI_IP -remoteEndpointPort KUISTI_PORT
+   .\Install-KuistiADPlugin -serviceUserName SERVICE_USER -logName LOG_NAME -remoteEndpointIpAddress KUISTI_IP -remoteEndpointPort KUISTI_PORT
    ```
    Substitute all arguments written in uppercase with the appropiate values for your environment. By default, WEC uses "ForwardedEvents" for log collection.
 9. Reboot the server.

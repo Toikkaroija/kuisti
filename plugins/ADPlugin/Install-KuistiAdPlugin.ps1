@@ -1,6 +1,7 @@
 ﻿param (
 
     [string]$logName,
+    [string]$serviceUserName,
     [string]$remoteEndpointIpAddress,
     [uint16]$remoteEndpointPort
 
@@ -11,7 +12,7 @@ $password = Read-Host -Prompt "Write the password for the kuisti service account
 New-Item -Path "C:\Program Files" -Name "Kuisti" -ItemType "directory" -Force
 Copy-Item -Path ".\KuistiAdPlugin.ps1" -Destination "C:\Program Files\Kuisti" -Force
 
-Add-ADGroupMember -Identity "Event Log Readers" -Members "kuisti"
+Add-ADGroupMember -Identity "Event Log Readers" -Members "$serviceUserName"
 
 
 $staArgs = @{
@@ -33,7 +34,7 @@ $rstArgs = @{
     TaskName = "KuistiAdManager"
     Action = $action
     Trigger = $trigger
-    User = "$env:USERDOMAIN\kuisti"
+    User = "$env:USERDOMAIN\$serviceUserName"
     Password = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($password))
     Settings = $settings
 
