@@ -40,7 +40,7 @@ The plugins are meant to be installed on logging servers, that can forward works
    ```
 2. Run the installation script.
    ```bash
-   chmod +x install.sh && ./install.sh
+   chmod +x install.sh && sudo ./install.sh
    ```
 
 ### Plugin Installation
