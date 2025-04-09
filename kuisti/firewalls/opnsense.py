@@ -252,6 +252,11 @@ class Opnsense(Firewall):
     
     def getStates(self, ipAddress: str, filterConf: dict, *, returnValues: list[str] = ['id']) -> Generator[str | dict]:
 
+        # NOTE: Apparently the searchPhrase variable does not work well with colons (":"). You could search states by IP and destination port,
+        #       the query response will be empty, if you try to search states with "IP:PORT". However, the query will work if you put a space
+        #       between the IP and the colon ("IP :PORT"). You might have to escape the colon somehow for the first syntax to work,
+        #       but I haven't figured out a way to do that yet, because the documentation regarding this topic is quite narrow.
+
         postResult = self._post(
 
             f'{self.url}/diagnostics/firewall/query_states',
@@ -275,8 +280,17 @@ class Opnsense(Firewall):
             protocol = filterConf["protocol"].lower()
 
             dstPort = str(filterConf["dstPort"])
-            dstPort = dstPort.split('-') if ((dstPort == '*') or ('-' in dstPort)) else [dstPort, int(dstPort) + 1]
 
+            # Check destination port from conf before filtering.
+            if ('-' in dstPort):
+
+                dstPort = dstPort.split('-')
+                dstPort = range(int(dstPort[0]), int(dstPort[1]) + 1)
+
+            elif (dstPort != '*'):
+                dstPort = [int(dstPort)]
+
+            # Check destination address from conf before filtering.
             if (reMatch(r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}\/(3[0-2]|[12]\d|\d)$', filterConf["dstAddr"])):
                 dstAddr = IPv4Interface(filterConf["dstAddr"])
 
@@ -290,10 +304,10 @@ class Opnsense(Firewall):
                 for state in activeStates['rows']:
 
                     if ("rule" not in state): continue
-                    if (ipVersion != state["ipproto"]): continue
+                    #if (ipVersion != state["ipproto"]): continue
                     if (protocol != state["proto"]): continue
 
-                    if (('*' in dstPort) or (state["dst_port"] in dstPort)):
+                    if (('*' in dstPort) or (int(state["dst_port"]) in dstPort)):
                         if ((dstAddr == '*') or (state["dst_addr"] == dstAddr)):
                             if ((state["nat_addr"] == ipAddress) or (state["src_addr"] == ipAddress)):
                             
@@ -307,10 +321,10 @@ class Opnsense(Firewall):
                 for state in activeStates['rows']:
 
                     if ("rule" not in state): continue
-                    if (ipVersion != state["ipproto"]): continue
+                    #if (ipVersion != state["ipproto"]): continue
                     if (protocol != state["proto"]): continue
 
-                    if (('*' in dstPort) or (state["dst_port"] in dstPort)):
+                    if (('*' in dstPort) or (int(state["dst_port"]) in dstPort)):
                         if ((dstAddr == '*') or (state["dst_addr"] == dstAddr)):
                             if ((state["nat_addr"] == ipAddress) or (state["src_addr"] == ipAddress)):
                             
